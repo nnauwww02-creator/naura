@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impostor Game - 2026 Mega Update</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --sky-blue: #87CEEB;
+            --navy-blue: #000080;
+            --deep-navy: #000033;
+            --char-red: #ff4757;
+            --char-green: #2ed573;
+            --char-cyan: #1e90ff;
+            --char-purple: #a442f5;
+            --char-orange: #ffa502;
+            --char-yellow: #eccc68;
+            --char-pink: #ff6b81;
+            --char-lime: #badc58;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at top, #ffffff 0%, var(--sky-blue) 100%);
+            color: var(--navy-blue);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .navbar-brand { font-family: 'Bungee', cursive; }
+
+        /* --- Global Animations --- */
+        @keyframes float-fancy {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(2deg); }
+            66% { transform: translateY(-10px) rotate(-2deg); }
+        }
+
+        /* --- Character & Skin Engine 2.0 --- */
+        .char-container {
+            position: relative;
+            width: 90px;
+            margin: 0 auto;
+            transition: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .char-box {
+            width: 80px;
+            height: 100px;
+            border-radius: 35px 35px 15px 15px;
+            position: relative;
+            border: 5px solid #000;
+            margin: 0 auto;
+            box-shadow: inset -8px -8px rgba(0,0,0,0.15);
+            transition: 0.4s;
+        }
+
+        .visor {
+            width: 55px;
+            height: 32px;
+            background: linear-gradient(135deg, #ffffff 0%, #48dbfb 50%, #2e86de 100%);
+            border: 4px solid #000;
+            border-radius: 20px;
+            position: absolute;
+            top: 20px;
+            right: -10px;
+            z-index: 2;
+        }
+
+        .skin-hat {
+            position: absolute;
+            top: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 32px;
+            z-index: 5;
+            filter: drop-shadow(3px 3px 0 #000);
+            pointer-events: none;
+        }
+
+        .char-card:hover .char-container {
+            transform: scale(1.25) translateY(-15px);
+        }
+
+        /* --- Mode Card 2.0 --- */
+        .mode-card {
+            border: none;
+            border-radius: 35px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            border: 3px solid var(--navy-blue);
+            padding: 35px 25px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .mode-card:hover {
+            background: var(--navy-blue);
+            color: white !important;
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,128,0.25);
+        }
+
+        .mode-card .icon-box {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            display: inline-block;
+            transition: 0.4s;
+        }
+
+        .mode-card:hover .icon-box {
+            transform: rotate(15deg) scale(1.2);
+        }
+
+        /* --- Layout & Utilities --- */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            border-radius: 50px;
+            padding: 60px 20px;
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+
+        .hero-img-box {
+            animation: float-fancy 6s ease-in-out infinite;
+        }
+
+        .btn-mega {
+            background: var(--navy-blue);
+            color: white;
+            border-radius: 50px;
+            padding: 18px 45px;
+            font-weight: bold;
+            border: none;
+            box-shadow: 0 10px 0 var(--deep-navy);
+            transition: 0.2s;
+        }
+
+        .btn-mega:active {
+            transform: translateY(5px);
+            box-shadow: 0 5px 0 var(--deep-navy);
+        }
+
+        /* Responsive Grids */
+        @media (max-width: 991px) {
+            .display-2 { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm" style="background: var(--navy-blue);">
+        <div class="container">
+            <a class="navbar-brand" href="#">🚀 IMPOSTOR.CORE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto text-center">
+                    <li class="nav-item"><a class="nav-link px-3 fw-bold" href="#modes">NEW MODES</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 fw-bold" href="#characters">SKIN SHOP</a></li>
+                    <li class="nav-item ms-lg-3"><button class="btn btn-info rounded-pill px-4 fw-bold text-white shadow-sm">PLAY NOW</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="container py-5 mt-4">
+        <div class="row align-items-center">
+            <div class="col-lg-6 animate__animated animate__fadeInLeft">
+                <span class="badge bg-primary px-3 py-2 rounded-pill mb-3">VERSION 4.0 STABLE</span>
+                <h1 class="display-2 mb-4">ERA BARU <br><span style="color: white; -webkit-text-stroke: 2px var(--navy-blue);">MISTERI</span></h1>
+                <p class="lead mb-4 fs-4 opacity-75">Update terbesar tahun 2026: 8 Mode baru, 12 Karakter, dan sistem Skin kustomisasi tanpa batas.</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <button class="btn-mega">AMBIL HADIAH HARIAN</button>
+                    <button class="btn btn-outline-dark btn-lg rounded-pill px-4 fw-bold">PANDUAN PEMULA</button>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mt-5 mt-lg-0">
+                <div class="hero-img-box">
+                    <div class="char-container" style="width: 220px;">
+                        <span class="skin-hat" style="font-size: 90px; top: -65px;">🛸</span>
+                        <div class="char-box" style="background: var(--navy-blue); width: 200px; height: 250px; border-radius: 75px 75px 25px 25px; border-width: 8px;">
+                            <div class="visor" style="width: 140px; height: 70px; top: 45px; border-width: 7px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="modes" class="py-5 bg-white shadow-sm" style="border-radius: 60px 60px 0 0;">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="section-title display-4">PILIH MISI ANDA</h2>
+                <div class="bg-primary mx-auto" style="height: 5px; width: 100px; border-radius: 10px;"></div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4 animate__animated animate__fadeInUp">
+                    <div class="mode-card">
+                        <span class="icon-box">💰</span>
+                        <h3>Bounty Hunter</h3>
+                        <p class="mb-0 opacity-75">Target acak diberikan kepada Impostor. Bunuh target untuk mendapatkan poin ganda!</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                    <div class="mode-card">
+                        <span class="icon-box">📦</span>
+                        <h3>Prop Hunt</h3>
+                        <p class="mb-0 opacity-75">Kru bisa berubah menjadi benda-benda di peta. Bisakah Impostor menemukan mereka?</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                    <div class="mode-card">
+                        <span class="icon-box">🌀</span>
+                        <h3>Teleport Chaos</h3>
+                        <p class="mb-0 opacity-75">Setiap 30 detik, semua pemain akan berpindah lokasi secara acak di seluruh peta.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                    <div class="mode-card">
+                        <span class="icon-box">🔦</span>
+                        <h3>Blackout</h3>
+                        <p class="mb-0 opacity-75">Lampu mati permanen. Kru hanya dibekali senter kecil dengan baterai terbatas.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+                    <div class="mode-card">
+                        <span class="icon-box">🃏</span>
+                        <h3>Jester Role</h3>
+                        <p class="mb-0 opacity-75">Jika kamu diusir (voted out) saat menjadi Jester, kamu langsung memenangkan game!</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 animate__animated animate__fadeInUp" style="animation-delay: 0.5s;">
+                    <div class="mode-card">
+                        <span class="icon-box">🧟</span>
+                        <h3>Infection</h3>
+                        <p class="mb-0 opacity-75">Satu zombie harus menginfeksi seluruh kru sebelum waktu habis.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="characters" class="py-5 container mt-5">
+        <div class="glass-panel text-center">
+            <h2 class="mb-5 display-5">NEW CHARACTER SKINS</h2>
+            <div class="row g-5 justify-content-center">
+                <div class="col-6 col-md-4 col-lg-3 char-card">
+                    <div class="char-container">
+                        <span class="skin-hat">👑</span>
+                        <div class="char-box" style="background: var(--char-red);"><div class="visor"></div></div>
+                    </div>
+                    <h5 class="mt-4 fw-bold">KING RED</h5>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3 char-card">
+                    <div class="char-container">
+                        <span class="skin-hat">🧙‍♂️</span>
+                        <div class="char-box" style="background: var(--char-purple);"><div class="visor"></div></div>
+                    </div>
+                    <h5 class="mt-4 fw-bold">MYSTIC</h5>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3 char-card">
+                    <div class="char-container">
+                        <span class="skin-hat">🤠</span>
+                        <div class="char-box" style="background: var(--char-orange);"><div class="visor"></div></div>
+                    </div>
+                    <h5 class="mt-4 fw-bold">SHERIFF</h5>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3 char-card">
+                    <div class="char-container">
+                        <span class="skin-hat">👻</span>
+                        <div class="char-box" style="background: var(--char-pink);"><div class="visor"></div></div>
+                    </div>
+                    <h5 class="mt-4 fw-bold">PHANTOM</h5>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3 char-card">
+                    <div class="char-container">
+                        <span class="skin-hat">👨‍🍳</span>
+                        <div class="char-box" style="background: var(--char-yellow);"><div class="visor"></div></div>
+                    </div>
+                    <h5 class="mt-4 fw-bold">GOLD CHEF</h5>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3 char-card">
+                    <div class="char-container">
+                        <span class="skin-hat">🥷</span>
+                        <div class="char-box" style="background: var(--char-green);"><div class="visor"></div></div>
+                    </div>
+                    <h5 class="mt-4 fw-bold">SHINOBI</h5>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3 char-card">
+                    <div class="char-container">
+                        <span class="skin-hat">😈</span>
+                        <div class="char-box" style="background: var(--char-lime);"><div class="visor"></div></div>
+                    </div>
+                    <h5 class="mt-4 fw-bold">IMP LIME</h5>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3 char-card">
+                    <div class="char-container">
+                        <span class="skin-hat">🛡️</span>
+                        <div class="char-box" style="background: var(--navy-blue);"><div class="visor"></div></div>
+                    </div>
+                    <h5 class="mt-4 fw-bold">GUARDIAN</h5>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-white text-center mt-5 py-5" style="background: var(--deep-navy);">
+        <div class="container">
+            <h3>IMPOSTOR.CORE</h3>
+            <p class="opacity-50">Join the cosmic deception. 2026 Edition.</p>
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <button class="btn btn-outline-light rounded-circle p-3">DISCORD</button>
+                <button class="btn btn-outline-light rounded-circle p-3">TIKTOK</button>
+                <button class="btn btn-outline-light rounded-circle p-3">TWITCH</button>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
